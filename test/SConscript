@@ -22,4 +22,8 @@ localenv.VariantDir(builddir, ".", duplicate=0)
 
 srclst = map(lambda x: builddir + '/' + x, glob.glob('*.cpp'))
 
-localenv.Program(targetpath, source=srclst, LIBS=libraries)
+program = localenv.Program(targetpath, source=srclst, LIBS=libraries)
+
+execution = localenv.Command('test.out', None, targetpath) #create the execution target (No input)
+
+Depends(execution, program) #tell scons that execution depends on program

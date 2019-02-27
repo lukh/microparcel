@@ -28,7 +28,7 @@ Export('env', 'buildroot', 'mode', 'debugcflags', 'releasecflags', 'libraries')
 #put all .sconsign files in one place
 env.SConsignFile()
 
-project = 'microparcel'
+project = 'src'
 SConscript('src/SConscript', exports=['project'])
 
 project = 'test'
