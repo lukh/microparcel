@@ -2,7 +2,9 @@
 #define MICROPARCEL_H
 
 #include <cstdint>
+#include <cstring>
 #include <limits>
+#include <numeric>
 
 namespace microparcel{
     /**
@@ -119,7 +121,6 @@ namespace microparcel{
                 }
             };
 
-        protected:
             uint8_t data[Size];
     };
 
@@ -129,7 +130,6 @@ namespace microparcel{
             static const uint8_t kSOF = 0xAA;
             static const uint8_t FrameSize = MsgSize + 2;
 
-        protected:
             uint8_t SOF;
             Message<MsgSize> message;
             uint8_t checksum;
@@ -149,8 +149,64 @@ namespace microparcel{
                 error
             };
 
-            Status parse(uint8_t in_byte, Message_T *out_msg);
-            static Frame_T encode(const Message_T &in_msg);
+            Parser(): state(idle), status(notcomplete){}
+
+
+            Status parse(uint8_t in_byte, Message_T *out_msg){
+                switch(state){
+                    case idle:
+                        // reset the state machine
+                        status = notcomplete;
+                        buff_ptr = 0;
+
+                        if(in_byte == Frame_T::kSOF){
+                            // first byte is valid;
+                            state = busy;
+                            buffer[buff_ptr++] = in_byte;
+                        }
+
+                        break;
+
+                    case busy:
+                        buffer[buff_ptr++] = in_byte;
+
+                        // handle the last data byte
+                        if(buff_ptr == Frame_T::FrameSize){
+                            if(isCheckSumValid()){
+                                status = complete;
+                                std::memcpy(out_msg->data, buffer+1, MsgSize);
+                            }
+
+                            else{
+                                status = error;
+                            }
+
+                            state = idle; //ready to retrieve new messages
+                        }
+                        /*else{
+                            status = notcomplete;
+                        }*/
+                        break;
+                }
+
+                return status;
+            }
+
+
+            static Frame_T encode(const Message_T &in_msg){
+                Frame_T frame;
+                frame.SOF = Frame_T::kSOF;
+                frame.message = in_msg;
+                frame.checksum = std::accumulate(std::begin(in_msg.data), std::end(in_msg.data), Frame_T::kSOF);
+
+                return frame;
+            }
+
+        protected:
+            bool isCheckSumValid(){
+                uint8_t cs = std::accumulate(std::begin(buffer), std::end(buffer)-1, 0);
+                return cs == buffer[Frame_T::FrameSize-1];
+            }
 
         private:
             enum State{
