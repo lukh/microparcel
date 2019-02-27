@@ -1,12 +1,18 @@
 #!python
 import os
 
-debugcflags = [] #['-W1', '-GX', '-EHsc', '-D_DEBUG', '/MDd']   #extra compile flags for debug
-releasecflags = [] #['-O2', '-EHsc', '-DNDEBUG', '/MD']         #extra compile flags for release
+############################################################################################""
+commonflags = ['-std=c++11']
 
+debugcflags = commonflags + [] #['-W1', '-GX', '-EHsc', '-D_DEBUG', '/MDd']   #extra compile flags for debug
+releasecflags = commonflags + [] #['-O2', '-EHsc', '-DNDEBUG', '/MD']         #extra compile flags for release
+
+cpppaths = [os.path.join(os.getcwd(), 'src')]
 libraries = ['cppunit']
 
 buildroot = os.path.join(os.getcwd(), 'build')
+############################################################################################""
+
 
 #get the mode flag from the command line
 #default to 'release' if the user didn't specify
@@ -21,6 +27,8 @@ if not (mode in ['debug', 'release']):
 print ('**** Compiling in ' + mode + ' mode...')
 
 env = Environment()
+
+env.Append( CPPPATH=cpppaths)
 
 #make sure the sconscripts can get to the variables
 Export('env', 'buildroot', 'mode', 'debugcflags', 'releasecflags', 'libraries')
