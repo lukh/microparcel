@@ -15,8 +15,10 @@
 #include <netinet/in.h>
 
 #include "test_up_message.h"
+#include "test_up_parser.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( MicroParcelMessageTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( MicroParcelParserTest );
 
 int main(){
     // informs test-listener about testresults
