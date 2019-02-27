@@ -1,3 +1,6 @@
+#ifndef TEST_UP_MESSAGE_H
+#define TEST_UP_MESSAGE_H
+
 #include <cppunit/TestCase.h>
 #include <cppunit/TestFixture.h>
 
@@ -106,6 +109,10 @@ class MicroParcelMessageTest : public CppUnit::TestFixture {
             CPPUNIT_ASSERT(msg->getByte(0) == 0xF); 
             msg->setByte(0, 0x0);
 
+            msg->set<uint8_t, 0, 8>(0xFF);
+            CPPUNIT_ASSERT(msg->getByte(0) == 0xFF); 
+            msg->setByte(0, 0x0);
+
             msg->set<uint8_t, 4, 4>(0xF);
             CPPUNIT_ASSERT(msg->getByte(0) == (0xF<<4)); 
             msg->setByte(0, 0x0);
@@ -118,6 +125,13 @@ class MicroParcelMessageTest : public CppUnit::TestFixture {
             CPPUNIT_ASSERT(msg->getByte(0) == (0x3<<6)); 
             CPPUNIT_ASSERT(msg->getByte(1) == (0x3)); 
             msg->setByte(0, 0x0);
+            msg->setByte(1, 0x0);
+
+            msg->set<uint8_t, 6, 8>(0xFF);
+            CPPUNIT_ASSERT(msg->getByte(0) == (0x3<<6)); 
+            CPPUNIT_ASSERT(msg->getByte(1) == (0x3F)); 
+            msg->setByte(0, 0x0);
+            msg->setByte(1, 0x0);
         }
 
         void testGet16bits() {
@@ -137,3 +151,5 @@ class MicroParcelMessageTest : public CppUnit::TestFixture {
     private:
         tMessage<8> *msg;
 };
+
+#endif //TEST_UP_MESSAGE_H
