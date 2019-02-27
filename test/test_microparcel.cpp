@@ -40,8 +40,8 @@ int main(){
     compileroutputter.write ();
 
     // Output XML for Jenkins CPPunit plugin
-    // std::ofstream xmlFileOut("cppTestBasicMathResults.xml");
-    // XmlOutputter xmlOut(&collectedresults, xmlFileOut);
+    // std::ofstream xmlFileOut("MicroParcelMessageTest.xml");
+    // CPPUNIT_NS::XmlOutputter xmlOut(&collectedresults, xmlFileOut);
     // xmlOut.write();
 
     // return 0 if tests were successful
