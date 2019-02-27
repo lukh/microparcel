@@ -22,7 +22,7 @@ namespace microparcel{
              * \tparam Bitsize the bitsize of the returned field (defines the mask)
              * */
             template <typename T, uint8_t Offset, uint8_t Bitsize>
-            T get(){
+            inline T get(){
                 //check consistency
                 static_assert(std::numeric_limits<T>::digits <= 16, "Can't get data larger than uint16_t");
                 static_assert(Bitsize <= 16, "Bit size is bigger than 16");
@@ -66,8 +66,15 @@ namespace microparcel{
                 }
             };
 
+            /**
+             * \brief sets a bitfield of Bitsize located at Offset in a uint8_t data chunk
+             * \tparam T the field type
+             * \tparam Offset the offset, in bits (from 0 to 8*Size)
+             * \tparam Bitsize the bitsize of the returned field (defines the mask)
+             * \param field the data to set
+             */
             template <typename T, uint8_t Offset, uint8_t Bitsize>
-            void set(T field){
+            inline void set(T field){
                 //check consistency
                 static_assert(std::numeric_limits<T>::digits <= 16, "Can't get data larger than uint16_t");
                 static_assert(Bitsize <= 16, "Bit size is bigger than 16");
