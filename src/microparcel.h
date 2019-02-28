@@ -163,13 +163,17 @@ namespace microparcel{
                 switch(state){
                     case idle:
                         // reset the state machine
-                        status = notcomplete;
                         buff_ptr = 0;
 
                         if(in_byte == Frame_T::kSOF){
                             // first byte is valid;
+                            status = notcomplete;
                             state = busy;
+
                             buffer[buff_ptr++] = in_byte;
+                        }
+                        else{
+                            status = error;
                         }
 
                         break;
