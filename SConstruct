@@ -14,24 +14,24 @@ buildroot = os.path.join(os.getcwd(), 'build')
 ############################################################################################""
 
 
-#get the mode flag from the command line
+#get the profile flag from the command line
 #default to 'release' if the user didn't specify
-mode = ARGUMENTS.get('mode', 'release')   #holds current mode
+profile = ARGUMENTS.get('profile', 'release')   #holds current profile
 
 #check if the user has been naughty: only 'debug' or 'release' allowed
-if not (mode in ['debug', 'release']):
-   print "Error: expected 'debug' or 'release', found: " + mymode
+if not (profile in ['debug', 'release']):
+   print "Error: expected 'debug' or 'release', found: " + profile
    Exit(1)
 
 #tell the user what we're doing
-print ('**** Compiling in ' + mode + ' mode...')
+print ('**** Compiling in ' + profile + ' profile...')
 
 env = Environment()
 
 env.Append( CPPPATH=cpppaths)
 
 #make sure the sconscripts can get to the variables
-Export('env', 'buildroot', 'mode', 'debugcflags', 'releasecflags', 'libraries')
+Export('env', 'buildroot', 'profile', 'debugcflags', 'releasecflags', 'libraries')
 
 #put all .sconsign files in one place
 env.SConsignFile()
