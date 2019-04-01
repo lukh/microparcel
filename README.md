@@ -1,8 +1,5 @@
-===========
 microparcel
 ===========
-
-
 
 
 Serialize and deserialize data from a buffer

@@ -3,4 +3,10 @@ compiler: gcc
 os: linux
 
 
+
+addons:
+  apt:
+    packages:
+      - libcppunit-dev
+
 script: scons test
