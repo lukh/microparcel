@@ -5,6 +5,7 @@
 #include <cstring>
 #include <limits>
 #include <numeric>
+#include <iterator>
 
 namespace microparcel{
     /**
