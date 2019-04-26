@@ -15,6 +15,7 @@ namespace microparcel{
     template <uint8_t Size>
     class Message{
         public:
+            static const uint8_t kSize = Size;
             /**
              * \brief returns bitfields of Bitsize located at Offset in a uint8_t data chunk
              * Can return field from 1 to 16 bits
@@ -152,12 +153,12 @@ namespace microparcel{
             using Frame_T = Frame<MsgSize>;
             
             enum Status{
-                complete = 0,
-                notcomplete,
-                error
+                eComplete = 0,
+                eNotComplete,
+                eError
             };
 
-            Parser(): state(idle), status(notcomplete){}
+            Parser(): state(idle), status(eNotComplete){}
 
 
             Status parse(uint8_t in_byte, Message_T *out_msg){
@@ -168,13 +169,13 @@ namespace microparcel{
 
                         if(in_byte == Frame_T::kSOF){
                             // first byte is valid;
-                            status = notcomplete;
+                            status = eNotComplete;
                             state = busy;
 
                             buffer[buff_ptr++] = in_byte;
                         }
                         else{
-                            status = error;
+                            status = eError;
                         }
 
                         break;
@@ -185,18 +186,18 @@ namespace microparcel{
                         // handle the last data byte
                         if(buff_ptr == Frame_T::FrameSize){
                             if(isCheckSumValid()){
-                                status = complete;
+                                status = eComplete;
                                 std::memcpy(out_msg->data, buffer+1, MsgSize);
                             }
 
                             else{
-                                status = error;
+                                status = eError;
                             }
 
                             state = idle; //ready to retrieve new messages
                         }
                         /*else{
-                            status = notcomplete;
+                            status = eNotComplete;
                         }*/
                         break;
                 }
