@@ -7,7 +7,7 @@ commonflags = ['-std=c++11']
 debugcflags = commonflags + [] #['-W1', '-GX', '-EHsc', '-D_DEBUG', '/MDd']   #extra compile flags for debug
 releasecflags = commonflags + [] #['-O2', '-EHsc', '-DNDEBUG', '/MD']         #extra compile flags for release
 
-cpppaths = [os.path.join(os.getcwd(), 'src')]
+cpppaths = [os.path.join(os.getcwd(), 'include', 'microparcel')]
 libraries = ['cppunit']
 
 buildroot = os.path.join(os.getcwd(), 'build')
