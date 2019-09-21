@@ -43,12 +43,12 @@ class MicroParcelParserTest : public CppUnit::TestFixture {
             microparcel::Message<4> msg;
 
             // valid message
-            CPPUNIT_ASSERT(parser.parse(0xAA, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(0, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(1, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(2, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(3, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(0xFF & (0xAA+0+1+2+3), &msg) == microparcel::Parser<4>::complete);
+            CPPUNIT_ASSERT(parser.parse(0xAA, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(0, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(1, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(2, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(3, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(0xFF & (0xAA+0+1+2+3), &msg) == microparcel::Parser<4>::eComplete);
 
             CPPUNIT_ASSERT(msg.data[0] == 0);
             CPPUNIT_ASSERT(msg.data[1] == 1);
@@ -56,22 +56,22 @@ class MicroParcelParserTest : public CppUnit::TestFixture {
             CPPUNIT_ASSERT(msg.data[3] == 3);
 
             // invalid CS
-            CPPUNIT_ASSERT(parser.parse(0xAA, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(0, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(1, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(2, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(255, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(0xFF & (0xAA+0+1+2+3), &msg) == microparcel::Parser<4>::error);
+            CPPUNIT_ASSERT(parser.parse(0xAA, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(0, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(1, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(2, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(255, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(0xFF & (0xAA+0+1+2+3), &msg) == microparcel::Parser<4>::eError);
 
             // Invalid SOF
-            CPPUNIT_ASSERT(parser.parse(0xA8, &msg) == microparcel::Parser<4>::error);
-            CPPUNIT_ASSERT(parser.parse(0xA9, &msg) == microparcel::Parser<4>::error);
-            CPPUNIT_ASSERT(parser.parse(0xAA, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(8, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(9, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(10, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(11, &msg) == microparcel::Parser<4>::notcomplete);
-            CPPUNIT_ASSERT(parser.parse(0xFF & (0xAA+8+9+10+11), &msg) == microparcel::Parser<4>::complete);
+            CPPUNIT_ASSERT(parser.parse(0xA8, &msg) == microparcel::Parser<4>::eError);
+            CPPUNIT_ASSERT(parser.parse(0xA9, &msg) == microparcel::Parser<4>::eError);
+            CPPUNIT_ASSERT(parser.parse(0xAA, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(8, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(9, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(10, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(11, &msg) == microparcel::Parser<4>::eNotComplete);
+            CPPUNIT_ASSERT(parser.parse(0xFF & (0xAA+8+9+10+11), &msg) == microparcel::Parser<4>::eComplete);
         }
 };
 
