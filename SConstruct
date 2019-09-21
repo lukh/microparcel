@@ -20,7 +20,7 @@ profile = ARGUMENTS.get('profile', 'release')   #holds current profile
 
 #check if the user has been naughty: only 'debug' or 'release' allowed
 if not (profile in ['debug', 'release']):
-   print "Error: expected 'debug' or 'release', found: " + profile
+   print ("Error: expected 'debug' or 'release', found: " + profile)
    Exit(1)
 
 #tell the user what we're doing
