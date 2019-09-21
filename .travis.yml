@@ -8,5 +8,6 @@ addons:
   apt:
     packages:
       - libcppunit-dev
+      - scons
 
 script: scons test

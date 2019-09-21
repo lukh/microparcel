@@ -20,7 +20,7 @@ else:
 #specify the build directory
 localenv.VariantDir(builddir, ".", duplicate=0)
 
-srclst = map(lambda x: builddir + '/' + x, glob.glob('*.cpp'))
+srclst = list(map(lambda x: builddir + '/' + x, glob.glob('*.cpp')))
 
 program = localenv.Program(targetpath, source=srclst, LIBS=libraries)
 
