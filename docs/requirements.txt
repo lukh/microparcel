@@ -1,1 +1,2 @@
-exhale
+exhale>=0.2.3
+Sphinx>=2.2.0
