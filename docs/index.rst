@@ -9,8 +9,9 @@ Welcome to microparcel's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   :readme
-   :api/library_root
+   
+   readme
+   api/library_root
 
 
 
