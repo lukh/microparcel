@@ -61,9 +61,9 @@ html_static_path = ['_static']
 
 # Setup the breathe extension
 breathe_projects = {
-    "My Project": "./doxyoutput/xml"
+    "microparcel": "./doxyoutput/xml"
 }
-breathe_default_project = "My Project"
+breathe_default_project = "microparcel"
 
 # Setup the exhale extension
 exhale_args = {
