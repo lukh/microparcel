@@ -104,7 +104,7 @@ The Parser takes bytes, and builds up a Message from the data stream.
                     case TParser::eComplete:
                         // msg is complete, handle it
                         // HANDLE_MSG(msg);
-                        break
+                        break;
                 }
             }
 
