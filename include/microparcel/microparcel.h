@@ -233,6 +233,69 @@ namespace microparcel{
             uint8_t buffer[Frame_T::FrameSize];
             uint8_t buff_ptr;
     };
+
+
+
+    /**
+     * A hardware abstracted implementation of a MessageProcessor.
+     * parse byte from hardware to route the message to the generated microparcel Router. (processXYZ(...) )
+     * a send method makes the frame from message and send bytes via pure virtual sendFrame
+     * 
+     * sendFrame must be implemented, in Implementation. 
+     * It sends data on the bus in microparcel format.
+     * all the processXYZ methods provided by the router must be implemented, in Implementation
+     * Implementation can also provide a way to poll data from a stream (eg UART) and call parse, in a run() for example
+     * 
+     * Usage:
+     * class ZeProcessor: public microparcel::MsgProcessor<ZeProcessor, ZeRouter, ZeMessage >{
+     *   virtual void sendFrame(uint8_t *buffer, uint8_t buffer_size){
+     *      // send data to the Bus, UART, etc...
+     *   }
+     * 
+     *   void run(){
+     *      parse(uart::getchar());
+     *   }
+     * 
+     * }
+     * 
+     */
+    template <typename Implementation, typename Router, typename MsgType>
+    class MsgProcessor: public Router{
+        using TParser = microparcel::Parser<MsgType::kSize>;
+        using TFrame = typename TParser::Frame_T;
+
+        public:
+            /**
+             * Send a message generated via a Router::makeXYZ
+             */
+            void send(const MsgType &inMsg){
+                TFrame frame = mParser.encode(inMsg);
+                uint8_t *buffer = (uint8_t *)(&frame);
+                uint8_t buffer_size = sizeof(frame);
+
+                Implementation& derived = static_cast<Implementation&>(*this);
+                derived.sendFrame(buffer, buffer_size);
+            }
+
+            /**
+             * interface for sending frame's bytes
+             */
+            // protected void Implementation::sendFrame(const TFrame &inFrame);
+
+            /**
+             * Parse a byte with microparcel::Parser, and process it with the given Router
+             */
+            void parse(uint8_t inByte){
+                typename TParser::Status status = mParser.parse(inByte, &mMsgRecv);
+                if(status == TParser::eComplete){
+                    this->process(mMsgRecv);
+                }
+            }
+
+        private:
+            TParser mParser;
+            MsgType mMsgRecv;
+    };
 };
 
 #endif //MICROPARCEL_H

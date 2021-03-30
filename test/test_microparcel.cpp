@@ -16,9 +16,11 @@
 
 #include "test_up_message.h"
 #include "test_up_parser.h"
+#include "test_processor.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( MicroParcelMessageTest );
 CPPUNIT_TEST_SUITE_REGISTRATION( MicroParcelParserTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( MicroParcelProcessorTest );
 
 int main(){
     // informs test-listener about testresults
