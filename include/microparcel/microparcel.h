@@ -270,11 +270,7 @@ namespace microparcel{
              */
             void send(const MsgType &inMsg){
                 TFrame frame = mParser.encode(inMsg);
-                uint8_t *buffer = (uint8_t *)(&frame);
-                uint8_t buffer_size = sizeof(frame);
-
-                Implementation& derived = static_cast<Implementation&>(*this);
-                derived.sendFrame(buffer, buffer_size);
+                Implementation::sendFrame(frame);
             }
 
             /**
